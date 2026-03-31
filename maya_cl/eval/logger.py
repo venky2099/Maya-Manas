@@ -1,5 +1,5 @@
-﻿# logger.py — Maya-Chitta (Paper 6)
-# Extends Paper 5 logger with Chitta columns
+﻿# logger.py -- Maya-Manas (Paper 7)
+# Extends Paper 6 logger with manas_peak_fraction column.
 
 import csv
 import os
@@ -23,26 +23,29 @@ class RunLogger:
                   affective: dict,
                   samskara_mean: float = 0.0,
                   moha_fraction: float = 0.0,
-                  retrograde_fired: bool = False) -> None:
+                  retrograde_fired: bool = False,
+                  manas_peak_fraction: float = 0.0) -> None:
         row = {
-            "task":                 task,
-            "epoch":                epoch,
-            "batch":                batch,
-            "loss":                 round(loss, 6),
-            "confidence":           round(confidence, 6),
-            "pain_fired":           int(pain_fired),
-            "lability_mean":        round(lability_mean, 6),
+            "task":                    task,
+            "epoch":                   epoch,
+            "batch":                   batch,
+            "loss":                    round(loss, 6),
+            "confidence":              round(confidence, 6),
+            "pain_fired":              int(pain_fired),
+            "lability_mean":           round(lability_mean, 6),
             "vairagya_protection_fc1": round(vairagya_protection, 6),
-            "shraddha":             round(affective.get("shraddha", 0), 6),
-            "bhaya":                round(affective.get("bhaya",    0), 6),
-            "vairagya":             round(affective.get("vairagya", 0), 6),
-            "spanda":               round(affective.get("spanda",   0), 6),
-            "viveka_signal":        round(affective.get("viveka",   0), 6),
-            "buddhi":               round(affective.get("buddhi",   0), 6),
-            "chitta":               round(affective.get("chitta",   0), 6),
-            "samskara_mean":        round(samskara_mean,   6),
-            "moha_fraction":        round(moha_fraction,   6),
-            "retrograde_fired":     int(retrograde_fired),
+            "shraddha":                round(affective.get("shraddha", 0), 6),
+            "bhaya":                   round(affective.get("bhaya",    0), 6),
+            "vairagya":                round(affective.get("vairagya", 0), 6),
+            "spanda":                  round(affective.get("spanda",   0), 6),
+            "viveka_signal":           round(affective.get("viveka",   0), 6),
+            "buddhi":                  round(affective.get("buddhi",   0), 6),
+            "chitta":                  round(affective.get("chitta",   0), 6),
+            "manas":                   round(affective.get("manas",    0), 6),
+            "samskara_mean":           round(samskara_mean,        6),
+            "moha_fraction":           round(moha_fraction,        6),
+            "retrograde_fired":        int(retrograde_fired),
+            "manas_peak_fraction":     round(manas_peak_fraction,  6),
         }
         if self._writer is None:
             self._writer = csv.DictWriter(
@@ -57,7 +60,7 @@ class RunLogger:
               f"BWT={summary.get('BWT','?')}")
 
     def log_final(self, summary: dict) -> None:
-        print(f"\n  FINAL — AA:{summary.get('AA')} "
+        print(f"\n  FINAL -- AA:{summary.get('AA')} "
               f"BWT:{summary.get('BWT')} "
               f"FWT:{summary.get('FWT')}")
 

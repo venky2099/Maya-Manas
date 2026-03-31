@@ -1,5 +1,5 @@
-﻿# affective_state.py — Maya-Chitta (Paper 6)
-# Extends Paper 5 with chitta_signal tracking
+﻿# affective_state.py -- Maya-Manas (Paper 7)
+# Extends Paper 6 with manas_signal tracking.
 
 import torch
 from maya_cl.utils.config import (
@@ -7,22 +7,22 @@ from maya_cl.utils.config import (
     TAU_VIVEKA, TAU_BUDDHI,
 )
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 class AffectiveState:
     def __init__(self, device: torch.device):
-        self.device = device
+        self.device   = device
         self.shraddha = torch.tensor(0.5,  device=device)
         self.bhaya    = torch.tensor(0.0,  device=device)
         self.vairagya = torch.tensor(0.3,  device=device)
         self.spanda   = torch.tensor(0.4,  device=device)
         self.viveka   = torch.tensor(0.5,  device=device)
         self.buddhi   = torch.tensor(0.85, device=device)
-
-        # Chitta signal — running mean of retrograde release activity
-        # Rises when retrograde corrections fire, decays otherwise
         self.chitta   = torch.tensor(0.0,  device=device)
+
+        # Manas signal -- fraction of fc1 neurons that fired during
+        # peak-aligned timesteps. Rises when salient inputs dominate.
+        # Decays passively each batch.
+        self.manas    = torch.tensor(0.0,  device=device)
 
         self._experience_count = 0
         self._tau_buddhi       = TAU_BUDDHI
@@ -32,11 +32,11 @@ class AffectiveState:
         c = torch.tensor(confidence, device=self.device)
         p = torch.tensor(1.0 if pain else 0.0, device=self.device)
 
-        alpha_s = 1.0 / TAU_SHRADDHA
-        alpha_b = 1.0 / TAU_BHAYA
-        alpha_v = 1.0 / TAU_VAIRAGYA
-        alpha_p = 1.0 / TAU_SPANDA
-        alpha_vk= 1.0 / TAU_VIVEKA
+        alpha_s  = 1.0 / TAU_SHRADDHA
+        alpha_b  = 1.0 / TAU_BHAYA
+        alpha_v  = 1.0 / TAU_VAIRAGYA
+        alpha_p  = 1.0 / TAU_SPANDA
+        alpha_vk = 1.0 / TAU_VIVEKA
 
         self.shraddha = torch.clamp(
             self.shraddha * (1 - alpha_s) + c * alpha_s, 0.0, 1.0)
@@ -58,16 +58,28 @@ class AffectiveState:
         self.buddhi = torch.clamp(
             exp_factor * (1.0 - self.bhaya), 0.0, 1.0)
 
-        # Chitta decays passively each batch
+        # Passive decay each batch
         self.chitta = torch.clamp(self.chitta * 0.995, 0.0, 1.0)
+        self.manas  = torch.clamp(self.manas  * 0.995, 0.0, 1.0)
 
     def update_chitta(self, retrograde_fired: bool,
                       release_fraction: float) -> None:
-        """Called after retrograde fires to track Chitta activity."""
         if retrograde_fired:
             self.chitta = torch.clamp(
                 self.chitta + torch.tensor(
                     release_fraction * 0.1, device=self.device),
+                0.0, 1.0)
+
+    def update_manas(self, peak_active: torch.Tensor) -> None:
+        """
+        Called each batch with fc1 peak-aligned activity mask.
+        peak_active: bool tensor [FC1_SIZE]
+        Manas signal = fraction of fc1 neurons that fired during salient phase.
+        """
+        if peak_active is not None:
+            fraction = float(peak_active.float().mean().item())
+            self.manas = torch.clamp(
+                self.manas + torch.tensor(fraction * 0.05, device=self.device),
                 0.0, 1.0)
 
     def reset_experience(self) -> None:
@@ -82,6 +94,9 @@ class AffectiveState:
     def chitta_value(self) -> float:
         return float(self.chitta.item())
 
+    def manas_value(self) -> float:
+        return float(self.manas.item())
+
     def as_dict(self) -> dict:
         return {
             "shraddha": float(self.shraddha.item()),
@@ -91,4 +106,5 @@ class AffectiveState:
             "viveka":   float(self.viveka.item()),
             "buddhi":   float(self.buddhi.item()),
             "chitta":   float(self.chitta.item()),
+            "manas":    float(self.manas.item()),
         }
