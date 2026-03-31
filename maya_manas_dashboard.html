@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maya-Manas — Paper 7 Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #1a1614;
+  --ink2:      #2d2825;
+  --bg:        #faf8f5;
+  --bg2:       #f3efe9;
+  --bg3:       #ede8e0;
+  --card:      #ffffff;
+  --border:    rgba(0,0,0,0.08);
+  --border2:   rgba(0,0,0,0.14);
+  --text:      #1a1614;
+  --muted:     #7a6e64;
+  --muted2:    #4a3f36;
+  /* Manas palette — warm amber + teal + terracotta */
+  --manas:     #c8702a;
+  --manas2:    #e8943a;
+  --teal:      #2a7a6a;
+  --teal2:     #3a9a88;
+  --terra:     #b84a3a;
+  --gold:      #c8a832;
+  --bhaya:     #e05030;
+  --buddhi:    #2a6a4a;
+  --viveka:    #3050a0;
+  --vikalpa:   #8050c0;
+  --sankalpa:  #208060;
+  --shadow:    rgba(0,0,0,0.06);
+  --shadow2:   rgba(0,0,0,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+.site-header {
+  background: var(--ink);
+  padding: 3rem 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -60px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(200,112,42,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.site-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 20%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(42,122,106,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.header-series {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--manas2);
+  margin-bottom: 0.8rem;
+}
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  line-height: 1.1;
+  color: #faf8f5;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+.header-title .sanskrit {
+  font-style: italic;
+  font-weight: 400;
+  color: rgba(200,112,42,0.85);
+}
+.header-subtitle {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 640px;
+  margin-bottom: 1.8rem;
+  line-height: 1.65;
+}
+.header-meta {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.header-meta span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.38);
+}
+.header-meta strong { color: rgba(255,255,255,0.75); }
+
+/* ── Main layout ── */
+.main { max-width: 1340px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
+
+/* ── Section title ── */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 3rem 0 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--bg3);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.section-title .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  background: var(--manas);
+  color: white;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Metrics strip ── */
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px var(--shadow);
+}
+.metric-card {
+  background: var(--card);
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  transition: background 0.2s;
+  cursor: default;
+}
+.metric-card:hover { background: var(--bg2); }
+.metric-card.star { background: #fffbf0; }
+.metric-card.best { background: #f0faf6; }
+.metric-card.law  { background: #fdf5f0; }
+.metric-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+.metric-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem;
+  line-height: 1;
+  color: var(--ink);
+  font-weight: 700;
+}
+.metric-card.star .metric-value { color: var(--manas); }
+.metric-card.best .metric-value { color: var(--teal); }
+.metric-card.law  .metric-value { color: var(--bhaya); }
+.metric-sub {
+  font-size: 0.62rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  margin-top: 0.35rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge-amber  { background: #fef3c7; color: #92400e; }
+.badge-teal   { background: #d1fae5; color: #065f46; }
+.badge-red    { background: #fee2e2; color: #991b1b; }
+.badge-blue   { background: #dbeafe; color: #1e40af; }
+.badge-orange { background: #ffedd5; color: #9a3412; }
+
+/* ── Grid layouts ── */
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+.col-3-2   { display: grid; grid-template-columns: 3fr 2fr; gap: 1.5rem; }
+.col-2-3   { display: grid; grid-template-columns: 2fr 3fr; gap: 1.5rem; }
+
+/* ── Chart card ── */
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.6rem;
+  box-shadow: 0 1px 8px var(--shadow);
+}
+.chart-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+.chart-sub {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+/* ── Ablation bar chart ── */
+.bar-chart { display: flex; flex-direction: column; gap: 0.7rem; }
+.bar-row { display: flex; align-items: center; gap: 0.8rem; }
+.bar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  width: 180px;
+  flex-shrink: 0;
+  text-align: right;
+}
+.bar-label strong { color: var(--ink); }
+.bar-track {
+  flex: 1;
+  height: 26px;
+  background: var(--bg2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+.bar-fill span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: white;
+  font-weight: 500;
+}
+.bar-fill.star-bar { background: linear-gradient(90deg, var(--manas), var(--manas2)); }
+.bar-fill.ok-bar   { background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+.bar-fill.bad-bar  { background: linear-gradient(90deg, #aaa, #ccc); }
+.bar-fill.neg-bar  { background: linear-gradient(90deg, var(--terra), #e06050); }
+
+/* ── BWT bar (negative values) ── */
+.bwt-chart { display: flex; flex-direction: column; gap: 0.7rem; }
+.bwt-row { display: flex; align-items: center; gap: 0.8rem; }
+.bwt-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  width: 80px;
+  flex-shrink: 0;
+  text-align: right;
+}
+.bwt-track { flex: 1; height: 22px; background: var(--bg2); border-radius: 4px; position: relative; overflow: hidden; }
+.bwt-fill {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+}
+.bwt-fill span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 500;
+  color: white;
+}
+
+/* ── Matrix table ── */
+.matrix-wrap { overflow-x: auto; }
+.matrix-table {
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  width: 100%;
+}
+.matrix-table th, .matrix-table td {
+  padding: 0.38rem 0.5rem;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.matrix-table th {
+  background: var(--bg2);
+  color: var(--muted2);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+}
+.matrix-table td.diag    { background: #fef3c7; color: #92400e; font-weight: 600; }
+.matrix-table td.nonzero { background: #f0fdf4; color: #166534; }
+.matrix-table td.zero    { color: #cbd5e1; }
+.tab-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.tab-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: var(--bg2);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.tab-btn:hover { background: var(--bg3); }
+.tab-btn.active { background: var(--manas); color: white; border-color: var(--manas); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── O-LIF Visualiser ── */
+.olif-vis {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.timestep-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.ts-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  width: 28px;
+  color: var(--muted2);
+  font-weight: 600;
+}
+.ts-state {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.65rem;
+  width: 90px;
+  color: var(--muted);
+  font-style: italic;
+}
+.ts-bar-wrap { flex: 1; position: relative; }
+.ts-bar-track {
+  height: 32px;
+  background: var(--bg2);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.ts-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.ts-bar-fill span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: white;
+  font-weight: 600;
+}
+.ts-peak-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+.ts-peak-yes { background: #fef3c7; color: #92400e; }
+.ts-peak-no  { background: #f1f5f9; color: #94a3b8; }
+
+/* ── Interactive Explorer ── */
+.explorer-card {
+  background: linear-gradient(135deg, #fffbf7 0%, #fdf5ed 100%);
+  border: 2px solid rgba(200,112,42,0.2);
+  border-radius: 16px;
+  padding: 2.2rem;
+  box-shadow: 0 4px 24px rgba(200,112,42,0.08);
+}
+.explorer-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+.explorer-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+.slider-wrap {
+  margin-bottom: 2rem;
+}
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.6rem;
+}
+.slider-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--manas);
+}
+.slider-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+.slider-val .unit { font-size: 1rem; color: var(--muted); }
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--manas) var(--pct, 33%), var(--bg3) var(--pct, 33%));
+  outline: none;
+  cursor: pointer;
+  margin: 0.5rem 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--manas);
+  box-shadow: 0 2px 8px rgba(200,112,42,0.4);
+  border: 3px solid white;
+  transition: transform 0.1s;
+}
+input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+}
+.slider-ticks span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted);
+}
+.slider-ticks span.tick-data {
+  color: var(--manas);
+  font-weight: 600;
+  position: relative;
+}
+.slider-ticks span.tick-data::before {
+  content: '▲';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.45rem;
+  color: var(--manas);
+}
+
+/* ── Explorer output ── */
+.explorer-output {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.exp-metric {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+  box-shadow: 0 1px 4px var(--shadow);
+  transition: all 0.3s;
+}
+.exp-metric-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.exp-metric-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  transition: color 0.3s;
+}
+.exp-metric-sub {
+  font-size: 0.6rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── O-LIF live canvas ── */
+.olif-canvas-wrap {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 1px 4px var(--shadow);
+}
+.olif-canvas-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted2);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Regime indicator ── */
+.regime-bar {
+  height: 6px;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+  transition: background 0.4s;
+}
+.regime-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+
+/* ── Bhaya quiescence grid ── */
+.bhaya-grid {
+  display: grid;
+  grid-template-columns: 120px repeat(10, 1fr);
+  gap: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+}
+.qg-header {
+  background: var(--bg2);
+  color: var(--muted);
+  padding: 0.35rem 0.2rem;
+  text-align: center;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.qg-label {
+  background: var(--bg2);
+  color: var(--muted2);
+  padding: 0.35rem 0.4rem;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  font-size: 0.58rem;
+}
+.qg-cell {
+  padding: 0.35rem 0.2rem;
+  text-align: center;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ── Series timeline ── */
+.series-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.timeline-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+}
+.timeline-row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 38px;
+  width: 2px;
+  height: calc(100% - 8px);
+  background: var(--border2);
+  z-index: 0;
+}
+.timeline-dot {
+  width: 40px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+  z-index: 1;
+}
+.t-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.t-dot.active {
+  background: var(--manas);
+  border-color: var(--manas);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(200,112,42,0.15);
+}
+.timeline-content {
+  flex: 1;
+  padding: 0.6rem 1rem 1.2rem 0.8rem;
+}
+.timeline-paper {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink2);
+  margin-bottom: 0.15rem;
+}
+.timeline-paper.current { color: var(--manas); }
+.timeline-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
+}
+.timeline-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+/* ── Insight cards ── */
+.insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.insight-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.3rem;
+  border-left: 4px solid var(--manas);
+  box-shadow: 0 1px 6px var(--shadow);
+}
+.insight-card.teal  { border-left-color: var(--teal); }
+.insight-card.gold  { border-left-color: var(--gold); }
+.insight-card.terra { border-left-color: var(--terra); }
+.insight-card.bhaya { border-left-color: var(--bhaya); }
+.insight-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--manas);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.insight-card.teal .insight-num  { color: var(--teal); }
+.insight-card.gold .insight-num  { color: var(--gold); }
+.insight-card.terra .insight-num { color: var(--terra); }
+.insight-card.bhaya .insight-num { color: var(--bhaya); }
+.insight-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.insight-desc {
+  font-size: 0.76rem;
+  color: var(--muted2);
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+/* ── Mechanism explanation ── */
+.mech-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mech-step {
+  padding: 1.4rem 1rem;
+  text-align: center;
+  position: relative;
+  background: var(--card);
+}
+.mech-step:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+.mech-step:nth-child(1) { background: #fdf5f0; }
+.mech-step:nth-child(2) { background: #fdf8f0; }
+.mech-step:nth-child(3) { background: #f5fdf8; }
+.mech-step:nth-child(4) { background: #f0f5fd; }
+.mech-t {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.mech-thresh {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.mech-state {
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--muted2);
+  margin-bottom: 0.5rem;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+}
+.mech-peak {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* ── Footer ── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.4);
+  padding: 2rem 3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.site-footer a { color: var(--manas2); text-decoration: none; }
+.site-footer a:hover { color: var(--manas); }
+
+/* ── Canvas ── */
+canvas { display: block; }
+
+/* ── Plain language layer ── */
+.plain-tag {
+  display: inline-block;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  background: rgba(42,122,106,0.08);
+  border: 1px solid rgba(42,122,106,0.2);
+  padding: 0.08rem 0.4rem;
+  border-radius: 3px;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+.plain-line {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--teal);
+  line-height: 1.5;
+  margin-top: 0.3rem;
+}
+.plain-box {
+  background: linear-gradient(90deg, rgba(42,122,106,0.06), rgba(42,122,106,0.02));
+  border-left: 3px solid rgba(42,122,106,0.35);
+  border-radius: 0 8px 8px 0;
+  padding: 0.8rem 1rem;
+  margin-top: 0.9rem;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 300;
+  color: var(--muted2);
+  line-height: 1.7;
+}
+.plain-box strong { color: var(--teal); font-weight: 700; font-style: normal; }
+.metric-plain {
+  font-size: 0.62rem;
+  font-style: italic;
+  color: var(--teal);
+  font-weight: 300;
+  margin-top: 0.3rem;
+  line-height: 1.4;
+  font-family: 'Lato', sans-serif;
+}
+.section-plain {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--teal);
+  margin-top: 0.15rem;
+  margin-bottom: 0.8rem;
+  padding-left: 0.2rem;
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.5s ease both; }
+.fade-up:nth-child(2) { animation-delay: 0.08s; }
+.fade-up:nth-child(3) { animation-delay: 0.16s; }
+.fade-up:nth-child(4) { animation-delay: 0.24s; }
+.fade-up:nth-child(5) { animation-delay: 0.32s; }
+
+@media (max-width: 900px) {
+  .metrics-strip { grid-template-columns: repeat(3, 1fr); }
+  .two-col, .col-3-2, .col-2-3 { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr 1fr; }
+  .mech-steps { grid-template-columns: 1fr 1fr; }
+  .explorer-output { grid-template-columns: 1fr 1fr; }
+  .header-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="site-header">
+  <div class="header-series">Maya Research Series · Paper 7 · Nexus Learning Labs</div>
+  <h1 class="header-title">
+    Maya-<span class="sanskrit">Manas</span>
+    <em style="font-family:'Lato',sans-serif;font-weight:300;font-size:1rem;color:rgba(255,255,255,0.4);display:block;margin-top:0.5rem;font-style:normal;">
+      Oscillatory Thalamo-Cortical Gating for Class-Incremental Learning in Affective SNNs
+    </em>
+  </h1>
+  <p class="header-subtitle">
+    Manas (मनस्) — the oscillating, doubting, sensory-receiving mind — gates the fc1 LIF layer with a half-cycle cosine threshold descent, tracing the Vikalpa-to-Sankalpa transition within each forward pass. Only signals salient enough to spike at high threshold earn amplified Vairagya protection.
+  </p>
+  <p style="font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:300;color:rgba(200,148,58,0.85);max-width:640px;margin-bottom:1.8rem;line-height:1.65;font-style:italic;">
+    In plain terms: the network starts each moment with its eyes barely open — only the strongest signals get through first. Then it gradually opens up. What gets through early earns long-term protection. What sneaks in later does not.
+  </p>
+  <div class="header-meta">
+    <span><strong>Venkatesh Swaminathan</strong></span>
+    <span>BITS Pilani · M.Sc. DSAI</span>
+    <span>ORCID <strong>0000-0002-3315-7907</strong></span>
+    <span>Benchmark <strong>Split-CIFAR-100 CIL</strong></span>
+    <span>Seed <strong>42</strong></span>
+    <span>2026</span>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- ── 1. Key Metrics ── -->
+<div class="section-title"><span class="num">01</span> Key Results</div>
+<div class="section-plain">What did this paper actually achieve? Five numbers tell the story.</div>
+<div class="metrics-strip">
+  <div class="metric-card star fade-up">
+    <div class="metric-label">Average Accuracy</div>
+    <div class="metric-value">15.19<span style="font-size:1rem">%</span></div>
+    <div class="metric-sub">Full Maya-Manas · E</div>
+    <div class="badge badge-amber">+0.84pp vs P6</div>
+    <div class="metric-plain">How well the network remembers everything it has ever learned</div>
+  </div>
+  <div class="metric-card best fade-up">
+    <div class="metric-label">Best BWT in Series</div>
+    <div class="metric-value">−50.91<span style="font-size:1rem">%</span></div>
+    <div class="metric-sub">Least forgetting ever</div>
+    <div class="badge badge-teal">Series record</div>
+    <div class="metric-plain">How much it forgot old lessons while learning new ones — this is the lowest forgetting in 7 papers</div>
+  </div>
+  <div class="metric-card fade-up">
+    <div class="metric-label">A_manas canonical</div>
+    <div class="metric-value">0.10</div>
+    <div class="metric-sub">Calibrated amplitude</div>
+    <div class="badge badge-orange">Half-cycle O-LIF</div>
+    <div class="metric-plain">The dial setting that worked best — like tuning a radio to the clearest signal</div>
+  </div>
+  <div class="metric-card law fade-up">
+    <div class="metric-label">Bhaya Quiescence</div>
+    <div class="metric-value">0.000</div>
+    <div class="metric-sub">Under replay · all conditions</div>
+    <div class="badge badge-red">7th confirmation</div>
+    <div class="metric-plain">The fear signal goes completely silent once the network has something to compare against</div>
+  </div>
+  <div class="metric-card fade-up">
+    <div class="metric-label">Negative Control</div>
+    <div class="metric-value">B = A</div>
+    <div class="metric-sub">Structure ≠ mechanism</div>
+    <div class="badge badge-blue">Oscillation is key</div>
+    <div class="metric-plain">Proof that just adding the wiring does nothing — the oscillation itself is what matters</div>
+  </div>
+</div>
+
+<!-- ── 2. Mechanism ── -->
+<div class="section-title"><span class="num">02</span> O-LIF Mechanism — Vikalpa → Sankalpa</div>
+<div class="section-plain">How does the gate actually work? Think of it like waking up — your senses open gradually, and only what's loud enough to reach you in those first moments truly registers.</div>
+<div class="chart-card" style="margin-bottom:1.5rem;">
+  <div class="chart-title">Threshold Schedule Across T_STEPS = 4</div>
+  <div class="chart-sub">V_threshold(t) = V_base + A_manas · cos(π · t / (T_STEPS − 1)) &nbsp;·&nbsp; Half-cycle descent: maximum suppression at t=0, full receptivity at t=3</div>
+  <div class="mech-steps">
+    <div class="mech-step">
+      <div class="mech-t">t = 0</div>
+      <div class="mech-thresh" style="color:var(--vikalpa)">0.400</div>
+      <div class="mech-state">Vikalpa — doubt</div>
+      <span class="mech-peak ts-peak-yes">★ Peak-aligned</span>
+      <div class="plain-line" style="margin-top:0.6rem;font-size:0.65rem;">Only the loudest signals survive</div>
+    </div>
+    <div class="mech-step">
+      <div class="mech-t">t = 1</div>
+      <div class="mech-thresh" style="color:#9060b0">0.350</div>
+      <div class="mech-state">descending</div>
+      <span class="mech-peak ts-peak-no" style="background:#f1f5f9;color:#94a3b8">—</span>
+      <div class="plain-line" style="margin-top:0.6rem;font-size:0.65rem;">Gate beginning to open</div>
+    </div>
+    <div class="mech-step">
+      <div class="mech-t">t = 2</div>
+      <div class="mech-thresh" style="color:#407090">0.250</div>
+      <div class="mech-state">opening</div>
+      <span class="mech-peak ts-peak-no" style="background:#f1f5f9;color:#94a3b8">—</span>
+      <div class="plain-line" style="margin-top:0.6rem;font-size:0.65rem;">More signals allowed through</div>
+    </div>
+    <div class="mech-step">
+      <div class="mech-t">t = 3</div>
+      <div class="mech-thresh" style="color:var(--sankalpa)">0.200</div>
+      <div class="mech-state">Sankalpa — resolve</div>
+      <span class="mech-peak ts-peak-no" style="background:#f1f5f9;color:#94a3b8">—</span>
+      <div class="plain-line" style="margin-top:0.6rem;font-size:0.65rem;">Fully receptive — all signals welcome</div>
+    </div>
+  </div>
+  <div style="margin-top:1rem;padding:0.8rem 1rem;background:var(--bg2);border-radius:8px;font-size:0.72rem;color:var(--muted2);font-weight:300;line-height:1.6;">
+    <strong style="color:var(--manas);font-family:'JetBrains Mono',monospace;">Manas-GANE Intersection:</strong>
+    Only synapses that fire at t=0 (peak threshold, Vikalpa phase) qualify for amplified Vairagya protection. Noise spikes riding the open window at t=3 receive no amplification. The gate selects for saliency, not abundance.
+  </div>
+  <div class="plain-box">
+    <strong>In plain terms:</strong> Only signals that were strong enough to get through the tight early filter earn long-term protection. Signals that snuck in through the open window later get no bonus. The network rewards what mattered first.
+  </div>
+</div>
+
+<!-- ── 3. Ablation ── -->
+<div class="section-title"><span class="num">03</span> Ablation Study — 5 Conditions</div>
+<div class="section-plain">We ran 5 versions of the experiment — each changing one thing — to prove the oscillation itself caused the improvement, not something else.</div>
+<div class="two-col">
+  <div class="chart-card">
+    <div class="chart-title">Average Accuracy (AA %)</div>
+    <div class="chart-sub">Higher is better · Split-CIFAR-100 CIL · 10 tasks · seed=42</div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label"><strong>E · Full Maya-Manas ★</strong><div style="font-size:0.55rem;font-style:italic;color:var(--teal);font-weight:300;margin-top:1px;">Gate calibrated just right</div></div>
+        <div class="bar-track">
+          <div class="bar-fill star-bar" style="width:100%"><span>15.19%</span></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">D · Low amplitude<div style="font-size:0.55rem;font-style:italic;color:var(--teal);font-weight:300;margin-top:1px;">Gate too gentle — mild improvement</div></div>
+        <div class="bar-track">
+          <div class="bar-fill ok-bar" style="width:99.3%"><span>15.08%</span></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">A · Chitta baseline<div style="font-size:0.55rem;font-style:italic;color:var(--muted);font-weight:300;margin-top:1px;">No oscillation — reference point</div></div>
+        <div class="bar-track">
+          <div class="bar-fill bad-bar" style="width:94.5%"><span>14.35%</span></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">B · Static threshold<div style="font-size:0.55rem;font-style:italic;color:var(--muted);font-weight:300;margin-top:1px;">Wiring added, gate off — proves wiring alone does nothing</div></div>
+        <div class="bar-track">
+          <div class="bar-fill bad-bar" style="width:94.5%"><span>14.35%</span></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">C · High amplitude<div style="font-size:0.55rem;font-style:italic;color:var(--terra);font-weight:300;margin-top:1px;">Gate too aggressive — network went partially blind</div></div>
+        <div class="bar-track">
+          <div class="bar-fill neg-bar" style="width:85.7%"><span>13.01%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Backward Transfer (BWT %)</div>
+    <div class="chart-sub">Less negative = less forgetting · series record at −50.91%</div>
+    <div class="bwt-chart">
+      <div class="bwt-row">
+        <div class="bwt-label">E ★</div>
+        <div class="bwt-track">
+          <div class="bwt-fill" style="width:96.7%;background:linear-gradient(90deg,var(--teal),var(--teal2))"><span>−50.91%</span></div>
+        </div>
+      </div>
+      <div class="bwt-row">
+        <div class="bwt-label">D</div>
+        <div class="bwt-track">
+          <div class="bwt-fill" style="width:98.2%;background:linear-gradient(90deg,var(--teal2),#5abaa8)"><span>−51.87%</span></div>
+        </div>
+      </div>
+      <div class="bwt-row">
+        <div class="bwt-label">A</div>
+        <div class="bwt-track">
+          <div class="bwt-fill" style="width:99.7%;background:linear-gradient(90deg,#aaa,#bbb)"><span>−52.68%</span></div>
+        </div>
+      </div>
+      <div class="bwt-row">
+        <div class="bwt-label">B</div>
+        <div class="bwt-track">
+          <div class="bwt-fill" style="width:99.7%;background:linear-gradient(90deg,#aaa,#bbb)"><span>−52.68%</span></div>
+        </div>
+      </div>
+      <div class="bwt-row">
+        <div class="bwt-label">C</div>
+        <div class="bwt-track">
+          <div class="bwt-fill" style="width:100%;background:linear-gradient(90deg,var(--terra),#e06050)"><span>−53.00%</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1.2rem;padding:0.7rem;background:#f0faf6;border-radius:6px;font-size:0.68rem;color:var(--teal);font-family:'JetBrains Mono',monospace;">
+      ★ E achieves best BWT in the entire Maya series — Manas protects prior knowledge
+    </div>
+  </div>
+</div>
+
+<!-- ── 4. Interactive Explorer ── -->
+<div class="section-title"><span class="num">04</span> Interactive Experiment Explorer</div>
+<div class="section-plain">Drag the slider and watch the experiment change in real time. This is the actual data — no simulation.</div>
+<div class="explorer-card">
+  <div class="explorer-title">A_manas Amplitude Explorer</div>
+  <div class="explorer-desc">
+    Drag the slider to explore how the oscillation amplitude shapes the O-LIF threshold schedule, predicted accuracy, and network behaviour. Values at A=0, 0.05, 0.10, 0.25 are real experimental results — intermediate values are interpolated from the ablation data.
+  </div>
+  <div class="plain-box" style="margin-bottom:1.5rem;margin-top:0;">
+    <strong>What you're controlling:</strong> How aggressively the gate filters signals at each timestep. Too low — the gate barely does anything. Too high — the network goes blind and can't learn properly. The sweet spot is A=0.10, marked with ★.
+  </div>
+
+  <div class="slider-wrap">
+    <div class="slider-header">
+      <span class="slider-name">A_manas</span>
+      <span class="slider-val"><span id="sliderDisplay">0.10</span><span class="unit"> amplitude</span></span>
+    </div>
+    <input type="range" id="amanasSlider" min="0" max="30" value="10" step="1"
+           oninput="updateExplorer(this.value)">
+    <div class="slider-ticks">
+      <span class="tick-data" title="Real data: A=0">0.00</span>
+      <span>0.05</span>
+      <span class="tick-data" title="Real data: A=0.05" style="margin-left:1px">0.05</span>
+      <span>0.10</span>
+      <span class="tick-data" title="Real data: A=0.10">0.10</span>
+      <span>0.15</span>
+      <span>0.20</span>
+      <span class="tick-data" title="Real data: A=0.25">0.25</span>
+      <span>0.30</span>
+    </div>
+  </div>
+
+  <div class="regime-bar" id="regimeBar"></div>
+  <div class="regime-label" id="regimeLabel"></div>
+
+  <div class="explorer-output">
+    <div class="exp-metric">
+      <div class="exp-metric-label">Predicted AA</div>
+      <div class="exp-metric-val" id="expAA">15.19%</div>
+      <div class="exp-metric-sub" id="expAANote">canonical result</div>
+    </div>
+    <div class="exp-metric">
+      <div class="exp-metric-label">Predicted BWT</div>
+      <div class="exp-metric-val" id="expBWT">−50.91%</div>
+      <div class="exp-metric-sub" id="expBWTNote">best in series</div>
+    </div>
+    <div class="exp-metric">
+      <div class="exp-metric-label">Peak-aligned frac.</div>
+      <div class="exp-metric-val" id="expPeak">~32%</div>
+      <div class="exp-metric-sub" id="expPeakNote">t=0 salient spikes</div>
+    </div>
+  </div>
+
+  <div class="olif-canvas-wrap">
+    <div class="olif-canvas-title">O-LIF Threshold Schedule — Live Preview</div>
+    <canvas id="olifCanvas" height="160"></canvas>
+  </div>
+</div>
+
+<!-- ── 5. Accuracy Matrix ── -->
+<div class="section-title"><span class="num">05</span> Accuracy Matrix R[i][j]</div>
+<div class="section-plain">Each row = after training one more task. Each column = how well it still remembers that task. The highlighted diagonal = fresh performance. Everything below = memory retained. Ideally nothing drops to zero.</div>
+<div class="chart-card">
+  <div class="chart-title">Per-Task Accuracy After Each Training Task</div>
+  <div class="chart-sub">R[i][j] = accuracy on task j evaluated after training on task i. Diagonal = immediate accuracy. Below diagonal = retained knowledge. Above = unseen tasks.</div>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="switchMatrix('manas',event)">E · Full Maya-Manas</button>
+    <button class="tab-btn" onclick="switchMatrix('low',event)">D · Low Amplitude</button>
+    <button class="tab-btn" onclick="switchMatrix('high',event)">C · High Amplitude</button>
+    <button class="tab-btn" onclick="switchMatrix('baseline',event)">A · Chitta Baseline</button>
+  </div>
+  <div class="tab-panel active" id="mat-manas"><div class="matrix-wrap"><div id="matrix-manas-container"></div></div></div>
+  <div class="tab-panel" id="mat-low"><div class="matrix-wrap"><div id="matrix-low-container"></div></div></div>
+  <div class="tab-panel" id="mat-high"><div class="matrix-wrap"><div id="matrix-high-container"></div></div></div>
+  <div class="tab-panel" id="mat-baseline"><div class="matrix-wrap"><div id="matrix-baseline-container"></div></div></div>
+</div>
+
+<!-- ── 6. Signal Charts ── -->
+<div class="section-title"><span class="num">06</span> Affective Signals Across Tasks</div>
+<div class="section-plain">Two internal signals tracked throughout training — how well the gate selected salient signals, and how much of the network was locked in and protected.</div>
+<div class="two-col">
+  <div class="chart-card">
+    <div class="chart-title">Manas Signal — Peak-aligned Fraction per Task</div>
+    <div class="chart-sub">Fraction of fc1 neurons firing during Vikalpa phase (t=0). High amplitude suppresses early spikes; calibrated A=0.10 maintains ~32% salient fraction throughout.</div>
+    <div class="plain-box" style="margin-bottom:0.8rem;">What fraction of the network's signals were strong enough to pass the early tight filter. Think of it as — what percentage truly earned their place.</div>
+    <canvas id="manasCanvas" height="180"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Vairagya Protection % per Task</div>
+    <div class="chart-sub">Fraction of fc1 synapses above protection threshold. Full Manas shows slower accumulation but more targeted protection via Manas-GANE intersection.</div>
+    <div class="plain-box" style="margin-bottom:0.8rem;">How much of the network is locked in and protected from being overwritten by new lessons. Higher = better long-term memory.</div>
+    <canvas id="vairagya_canvas" height="180"></canvas>
+  </div>
+</div>
+
+<!-- ── 7. Bhaya Quiescence ── -->
+<div class="section-title"><span class="num">07</span> Bhaya Quiescence Law — 7th Confirmation</div>
+<div class="section-plain">Bhaya is the fear signal. Once the network has something to compare against, fear goes silent — every time, without exception. Seven papers in a row. We've named it a law.</div>
+<div class="chart-card">
+  <div class="chart-title">Bhaya Signal per Task · All Conditions</div>
+  <div class="chart-sub">
+    In any Maya series SNN with a functioning replay buffer, Bhaya firing rate approaches 0.000 from Task 1 onward — regardless of oscillation amplitude. Confirmed across seven consecutive papers. Now a named series law.
+  </div>
+  <!-- Convergence banner -->
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding:1rem 1.4rem;background:linear-gradient(90deg,#edfaf5,#e0f5ee);border:1.5px solid rgba(42,122,106,0.28);border-radius:10px;box-shadow:0 1px 6px rgba(42,122,106,0.08);">
+    <div style="font-size:2rem;line-height:1;flex-shrink:0;">🔒</div>
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--teal);margin-bottom:0.3rem;">All Conditions Converge — The Law Holds</div>
+      <div style="font-size:0.72rem;color:var(--muted2);font-weight:300;line-height:1.65;">
+        From T2 onward, every condition — spike starvation (C), optimal gating (E), no oscillation (A/B) — shows
+        <strong style="font-family:'JetBrains Mono',monospace;color:var(--teal);">Bhaya = 0.000</strong>.
+        The oscillatory gate makes no difference: the replay buffer dominates.
+        This is the <strong>7th consecutive confirmation</strong> of the Bhaya Quiescence Law across the Maya series.
+      </div>
+    </div>
+  </div>
+
+  <div class="bhaya-grid" id="bhayaGrid"></div>
+
+  <!-- Legend -->
+  <div style="margin-top:0.7rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;font-family:'JetBrains Mono',monospace;font-size:0.6rem;">
+    <div style="display:flex;align-items:center;gap:0.4rem;">
+      <div style="width:14px;height:14px;border-radius:3px;background:#fef3c7;border:1px solid rgba(146,64,14,0.3);"></div>
+      <span style="color:var(--muted);">T0 — no replay yet, small Bhaya spike</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.4rem;">
+      <div style="width:14px;height:14px;border-radius:3px;background:#fef9e7;border:1px solid rgba(146,64,14,0.2);"></div>
+      <span style="color:var(--muted);">T1 — replay begins, Bhaya → 0.001</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.4rem;">
+      <div style="width:14px;height:14px;border-radius:3px;background:#d1fae5;border:1px solid rgba(6,80,68,0.3);"></div>
+      <span style="color:var(--teal);font-weight:600;">T2–T9 · Quiescence Law confirmed · 0.000 ✓</span>
+    </div>
+  </div>
+
+  <div style="margin-top:0.9rem;padding:0.8rem 1rem;background:#fff8f0;border:1px solid rgba(200,112,42,0.2);border-radius:8px;font-size:0.72rem;color:var(--muted2);font-weight:300;line-height:1.65;">
+    <strong style="color:var(--manas);font-family:'JetBrains Mono',monospace;">Note on Condition C (High Amplitude):</strong>
+    Even with A_manas=0.25 causing spike starvation at early timesteps, the Bhaya Quiescence Law still holds — confirming it is driven by the replay mechanism, not the oscillatory gate.
+  </div>
+</div>
+
+<!-- ── 8. Key Insights ── -->
+<div class="section-title"><span class="num">08</span> Key Findings</div>
+<div class="section-plain">Four things this paper proves — stated plainly alongside the science.</div>
+<div class="insight-grid">
+  <div class="insight-card">
+    <div class="insight-label">Primary Finding</div>
+    <div class="insight-num">+0.84pp</div>
+    <div class="insight-desc">O-LIF oscillatory gating adds +0.84pp AA over the P6 Maya-Chitta baseline — an isolatable, falsifiable contribution confirmed by the 5-condition ablation.</div>
+    <div class="plain-line" style="margin-top:0.6rem;">The oscillation genuinely helped — and we can prove it wasn't anything else.</div>
+  </div>
+  <div class="insight-card teal">
+    <div class="insight-label">BWT Series Record</div>
+    <div class="insight-num">−50.91%</div>
+    <div class="insight-desc">Full Maya-Manas achieves the best backward transfer in the Maya series. Manas doesn't just improve accuracy — it reduces forgetting more effectively than any prior mechanism.</div>
+    <div class="plain-line" style="margin-top:0.6rem;color:var(--teal);">This paper's network forgot less than any previous version in the series.</div>
+  </div>
+  <div class="insight-card gold">
+    <div class="insight-label">Negative Control</div>
+    <div class="insight-num">B = A</div>
+    <div class="insight-desc">Manas structure wired with A_manas=0 contributes exactly zero gain over baseline. The oscillation is the mechanism — not the architectural wiring. A clean negative control.</div>
+    <div class="plain-line" style="margin-top:0.6rem;color:var(--gold);">We proved the gate needs to actually open — structure alone does nothing.</div>
+  </div>
+  <div class="insight-card terra">
+    <div class="insight-label">Spike Starvation</div>
+    <div class="insight-num">−1.34pp</div>
+    <div class="insight-desc">A_manas=0.25 suppresses early timestep spikes so aggressively that the network cannot accumulate Vairagya protection, leading to AA below all other conditions.</div>
+    <div class="plain-line" style="margin-top:0.6rem;color:var(--terra);">When the filter is too tight, the network goes partially blind and performance collapses.</div>
+  </div>
+</div>
+
+<!-- ── 9. Series Timeline ── -->
+<div class="section-title"><span class="num">09</span> Maya Research Series</div>
+<div class="section-plain">Each paper adds one new cognitive dimension from Advaita Vedanta philosophy, implemented as a concrete, testable computational mechanism. This is paper 7 of a planned 9.</div>
+<div class="col-3-2">
+  <div class="chart-card">
+    <div class="series-timeline">
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot">P1</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper">Nociceptive Metaplasticity</div>
+          <div class="timeline-detail">Bhaya · Vairagya · Shraddha · Spanda</div>
+          <div class="timeline-result" style="color:var(--muted)">Foundation — lability + heterosynaptic decay</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot">P2</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper">Maya-OS</div>
+          <div class="timeline-detail">Affective SNN as OS arbitration layer</div>
+          <div class="timeline-result" style="color:var(--muted)">Ahamkara dimension</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot">P3</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper">Maya-CL</div>
+          <div class="timeline-detail">Split-CIFAR-10 TIL</div>
+          <div class="timeline-result" style="color:var(--teal)">AA = 62.38%</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot">P4</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper">Maya-Smriti</div>
+          <div class="timeline-detail">Split-CIFAR-100 CIL · Buddhi dimension</div>
+          <div class="timeline-result" style="color:var(--teal)">AA = 31.84%</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot">P5</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper">Maya-Viveka</div>
+          <div class="timeline-detail">Split-CIFAR-100 CIL · GANE intersection</div>
+          <div class="timeline-result" style="color:var(--teal)">AA = 16.03%</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot">P6</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper">Maya-Chitta</div>
+          <div class="timeline-detail">Samskara traces · Moha release</div>
+          <div class="timeline-result" style="color:var(--teal)">AA = 14.42%</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-dot"><div class="t-dot active">P7</div></div>
+        <div class="timeline-content">
+          <div class="timeline-paper current">Maya-Manas ← You are here</div>
+          <div class="timeline-detail">O-LIF · Vikalpa→Sankalpa · Manas-GANE</div>
+          <div class="timeline-result" style="color:var(--manas)">AA = 15.19% · BWT = −50.91% ★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:1rem;">
+    <div class="chart-card">
+      <div class="chart-title">Series AA Progression</div>
+      <div class="chart-sub">CIL papers only (P4–P7) · Split-CIFAR-100</div>
+      <canvas id="seriesCanvas" height="160"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">IP Protection Active</div>
+      <div class="chart-sub">All outputs signed via sign_paper.py</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);line-height:2;">
+        <div>ORCID magic: <strong style="color:var(--manas)">0.002315</strong></div>
+        <div>LSB steganography: <strong style="color:var(--teal)">active</strong></div>
+        <div>Canary: <strong style="color:var(--ink2)">MayaNexusVS2026</strong></div>
+        <div>Watermark: <strong style="color:var(--ink2)">all figures</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <span>Maya-Manas · Paper 7 · Nexus Learning Labs, Bengaluru · 2026</span>
+  <span>
+    <a href="https://github.com/venky2099/Maya-Manas">GitHub</a> &nbsp;·&nbsp;
+    <a href="https://orcid.org/0000-0002-3315-7907">ORCID</a> &nbsp;·&nbsp;
+    Canary: MayaNexusVS2026NLL_Bengaluru_Narasimha
+  </span>
+</footer>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const ACC = {
+  manas: [
+    [59.5,0,0,0,0,0,0,0,0,0],
+    [15.3,57.4,0,0,0,0,0,0,0,0],
+    [21.4,21.2,58.2,0,0,0,0,0,0,0],
+    [17.7,11.1,17.4,54.8,0,0,0,0,0,0],
+    [12.5,10.1,14.5,8.2,64.6,0,0,0,0,0],
+    [16.1,11.6,19.2,7.9,13.6,62.9,0,0,0,0],
+    [11.3,4.8,12.3,8.0,19.5,13.6,66.3,0,0,0],
+    [8.4,11.9,12.9,8.4,11.8,14.7,7.2,58.8,0,0],
+    [9.9,5.8,12.2,5.9,11.7,13.7,14.8,15.9,59.9,0],
+    [16.2,8.0,11.8,5.0,10.5,6.9,14.8,7.0,4.0,67.7],
+  ],
+  low: [
+    [60.1,0,0,0,0,0,0,0,0,0],
+    [13.5,58.5,0,0,0,0,0,0,0,0],
+    [21.1,18.1,56.3,0,0,0,0,0,0,0],
+    [15.6,8.2,20.2,59.0,0,0,0,0,0,0],
+    [14.7,10.1,14.2,8.6,65.4,0,0,0,0,0],
+    [11.8,11.5,17.3,8.1,14.8,63.0,0,0,0,0],
+    [14.8,6.7,14.3,7.7,19.5,16.5,65.3,0,0,0],
+    [11.0,13.0,12.4,9.6,12.8,19.2,8.0,56.9,0,0],
+    [8.4,3.9,10.6,7.2,11.8,15.5,15.7,14.8,63.4,0],
+    [13.2,6.3,13.2,4.6,11.0,6.5,13.8,7.8,4.7,69.7],
+  ],
+  high: [
+    [59.9,0,0,0,0,0,0,0,0,0],
+    [12.8,53.4,0,0,0,0,0,0,0,0],
+    [21.3,21.4,60.9,0,0,0,0,0,0,0],
+    [20.2,12.4,16.3,54.4,0,0,0,0,0,0],
+    [15.0,10.8,17.2,8.3,63.4,0,0,0,0,0],
+    [16.8,15.5,20.2,11.3,13.3,59.9,0,0,0,0],
+    [9.4,5.6,11.7,7.6,18.9,13.0,65.9,0,0,0],
+    [7.2,14.0,14.0,10.3,12.7,16.3,5.8,57.3,0,0],
+    [12.5,4.8,13.1,8.7,11.4,14.4,17.4,15.0,64.1,0],
+    [12.7,3.9,9.8,3.0,7.9,3.4,12.1,6.5,2.9,67.9],
+  ],
+  baseline: [
+    [60.4,0,0,0,0,0,0,0,0,0],
+    [14.8,57.1,0,0,0,0,0,0,0,0],
+    [20.9,19.9,57.8,0,0,0,0,0,0,0],
+    [12.6,5.6,19.5,59.8,0,0,0,0,0,0],
+    [14.8,9.1,15.6,10.1,64.8,0,0,0,0,0],
+    [11.5,10.3,18.1,11.4,17.5,62.0,0,0,0,0],
+    [11.1,10.7,15.1,10.2,21.6,20.6,66.0,0,0,0],
+    [8.7,8.9,13.4,11.0,11.6,20.7,8.9,57.3,0,0],
+    [8.3,5.4,7.3,8.5,11.5,16.4,14.7,16.7,64.6,0],
+    [13.4,3.3,13.2,3.4,10.2,5.8,13.1,7.5,5.8,67.8],
+  ],
+};
+
+// Per-task signal data from CSVs
+const MANAS_PEAK = {
+  manas_full: [0.325,0.347,0.373,0.360,0.338,0.330,0.315,0.295,0.286,0.275],
+  low:        [0.427,0.436,0.464,0.463,0.428,0.405,0.380,0.359,0.348,0.325],
+  high:       [0.111,0.166,0.172,0.187,0.198,0.198,0.207,0.192,0.189,0.194],
+  baseline:   [0.505,0.517,0.548,0.546,0.508,0.474,0.441,0.406,0.395,0.359],
+};
+
+const VAIRAGYA_PCT = {
+  manas_full: [0.017,0.054,0.122,0.179,0.180,0.138,0.093,0.068,0.043,0.024],
+  low:        [0.057,0.178,0.311,0.366,0.373,0.308,0.256,0.217,0.175,0.133],
+  high:       [0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000],
+  baseline:   [0.059,0.198,0.390,0.480,0.475,0.434,0.369,0.306,0.266,0.219],
+};
+
+const BHAYA_DATA = {
+  manas_full: [0.032,0.001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+  low:        [0.033,0.001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+  high:       [0.033,0.001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+  baseline:   [0.033,0.001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+};
+
+// ── Matrix renderer ───────────────────────────────────────────────────────────
+function renderMatrix(id, data) {
+  const n = data.length;
+  let html = '<table class="matrix-table"><thead><tr><th>After T→</th>';
+  for (let j=0;j<n;j++) html += `<th>T${j}</th>`;
+  html += '</tr></thead><tbody>';
+  for (let i=0;i<n;i++) {
+    html += `<tr><th style="background:var(--bg2);color:var(--muted2);font-size:0.6rem;font-family:\'JetBrains Mono\',monospace;">T${i}</th>`;
+    for (let j=0;j<n;j++) {
+      const v = data[i][j];
+      if (j>i) html += `<td class="zero">—</td>`;
+      else if (i===j) html += `<td class="diag">${v.toFixed(1)}</td>`;
+      else if (v===0) html += `<td class="zero">0.0</td>`;
+      else html += `<td class="nonzero">${v.toFixed(1)}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  document.getElementById(id).innerHTML = html;
+}
+
+renderMatrix('matrix-manas-container', ACC.manas);
+renderMatrix('matrix-low-container',   ACC.low);
+renderMatrix('matrix-high-container',  ACC.high);
+renderMatrix('matrix-baseline-container', ACC.baseline);
+
+function switchMatrix(name, event) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('mat-'+name).classList.add('active');
+}
+
+// ── Canvas setup ──────────────────────────────────────────────────────────────
+function setupCanvas(id) {
+  const canvas = document.getElementById(id);
+  const dpr = window.devicePixelRatio||1;
+  const w = (canvas.parentElement.clientWidth||600);
+  const h = parseInt(canvas.getAttribute('height'));
+  canvas.width  = w*dpr;
+  canvas.height = h*dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  canvas.style.width  = w+'px';
+  canvas.style.height = h+'px';
+  return {ctx, w, h};
+}
+
+function drawLine(ctx, w, h, datasets, labels, yMin, yMax, pad, yFmt) {
+  pad = pad||{top:28,right:20,bottom:32,left:52};
+  yFmt = yFmt||(v=>v.toFixed(2));
+  const cw=w-pad.left-pad.right, ch=h-pad.top-pad.bottom, n=labels.length;
+  ctx.clearRect(0,0,w,h);
+  // grid
+  const steps=5;
+  for(let i=0;i<=steps;i++){
+    const y=pad.top+ch-(i/steps)*ch;
+    ctx.strokeStyle='rgba(0,0,0,0.06)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cw,y); ctx.stroke();
+    ctx.fillStyle='#7a6e64'; ctx.font='9px JetBrains Mono,monospace'; ctx.textAlign='right';
+    ctx.fillText(yFmt(yMin+(i/steps)*(yMax-yMin)), pad.left-5, y+3);
+  }
+  // x labels
+  ctx.fillStyle='#7a6e64'; ctx.font='9px JetBrains Mono,monospace'; ctx.textAlign='center';
+  for(let i=0;i<n;i++){
+    const x=pad.left+(i/(n-1))*cw;
+    ctx.fillText(labels[i], x, h-pad.bottom+14);
+  }
+  // lines + dots
+  datasets.forEach(ds=>{
+    ctx.strokeStyle=ds.color; ctx.lineWidth=ds.width||2;
+    ctx.setLineDash(ds.dash||[]);
+    ctx.beginPath();
+    ds.data.forEach((v,i)=>{
+      const x=pad.left+(i/(n-1))*cw;
+      const y=pad.top+ch-((v-yMin)/(yMax-yMin))*ch;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke(); ctx.setLineDash([]);
+    ds.data.forEach((v,i)=>{
+      const x=pad.left+(i/(n-1))*cw;
+      const y=pad.top+ch-((v-yMin)/(yMax-yMin))*ch;
+      ctx.beginPath(); ctx.arc(x,y,ds.dot||3,0,Math.PI*2);
+      ctx.fillStyle=ds.color; ctx.fill();
+    });
+  });
+  // legend
+  let lx=pad.left;
+  datasets.forEach(ds=>{
+    ctx.strokeStyle=ds.color; ctx.lineWidth=2; ctx.setLineDash(ds.dash||[]);
+    ctx.beginPath(); ctx.moveTo(lx,pad.top-10); ctx.lineTo(lx+18,pad.top-10); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#4a3f36'; ctx.font='8.5px Lato,sans-serif'; ctx.textAlign='left';
+    ctx.fillText(ds.label, lx+22, pad.top-6);
+    lx += ctx.measureText(ds.label).width+38;
+  });
+}
+
+const taskLabels = ['T0','T1','T2','T3','T4','T5','T6','T7','T8','T9'];
+
+// Manas peak fraction chart
+setTimeout(()=>{
+  const {ctx,w,h}=setupCanvas('manasCanvas');
+  drawLine(ctx,w,h,[
+    {data:MANAS_PEAK.manas_full, color:'#c8702a', label:'E · Full Manas (0.10)', width:2.5, dot:4},
+    {data:MANAS_PEAK.low,        color:'#2a7a6a', label:'D · Low (0.05)', width:1.8, dash:[4,3]},
+    {data:MANAS_PEAK.baseline,   color:'#aaa', label:'A/B · Baseline/Static', width:1.5, dash:[2,4]},
+    {data:MANAS_PEAK.high,       color:'#b84a3a', label:'C · High (0.25)', width:1.5, dash:[3,3]},
+  ], taskLabels, 0, 0.65, null, v=>(v*100).toFixed(0)+'%');
+},150);
+
+// Vairagya protection chart
+setTimeout(()=>{
+  const {ctx,w,h}=setupCanvas('vairagya_canvas');
+  drawLine(ctx,w,h,[
+    {data:VAIRAGYA_PCT.baseline,   color:'#aaa', label:'A · Baseline', width:1.5, dash:[2,4]},
+    {data:VAIRAGYA_PCT.low,        color:'#2a7a6a', label:'D · Low amp', width:1.8, dash:[4,3]},
+    {data:VAIRAGYA_PCT.manas_full, color:'#c8702a', label:'E · Full Manas ★', width:2.5, dot:4},
+    {data:VAIRAGYA_PCT.high,       color:'#b84a3a', label:'C · High amp', width:1.5, dash:[3,3]},
+  ], taskLabels, 0, 0.55, null, v=>(v*100).toFixed(0)+'%');
+},150);
+
+// Series AA chart
+setTimeout(()=>{
+  const {ctx,w,h}=setupCanvas('seriesCanvas');
+  const sLabels=['P4','P5','P6','P7'];
+  const sData=[31.84,16.03,14.42,15.19];
+  const pad={top:24,right:16,bottom:28,left:44};
+  const cw=w-pad.left-pad.right, ch=h-pad.top-pad.bottom;
+  ctx.clearRect(0,0,w,h);
+  for(let i=0;i<=4;i++){
+    const y=pad.top+ch-(i/4)*ch;
+    ctx.strokeStyle='rgba(0,0,0,0.06)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cw,y); ctx.stroke();
+    ctx.fillStyle='#7a6e64'; ctx.font='9px JetBrains Mono,monospace'; ctx.textAlign='right';
+    ctx.fillText((i/4*31.84).toFixed(1)+'%', pad.left-4, y+3);
+  }
+  sLabels.forEach((l,i)=>{
+    const x=pad.left+(i/3)*cw;
+    ctx.fillStyle='#7a6e64'; ctx.font='9px JetBrains Mono,monospace'; ctx.textAlign='center';
+    ctx.fillText(l,x,h-pad.bottom+13);
+  });
+  // area fill
+  ctx.beginPath();
+  sData.forEach((v,i)=>{
+    const x=pad.left+(i/3)*cw;
+    const y=pad.top+ch-(v/31.84)*ch;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.lineTo(pad.left+cw,pad.top+ch); ctx.lineTo(pad.left,pad.top+ch);
+  ctx.closePath();
+  ctx.fillStyle='rgba(200,112,42,0.08)'; ctx.fill();
+  // line
+  ctx.beginPath();
+  sData.forEach((v,i)=>{
+    const x=pad.left+(i/3)*cw;
+    const y=pad.top+ch-(v/31.84)*ch;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle='#c8702a'; ctx.lineWidth=2.5; ctx.stroke();
+  // dots + labels
+  sData.forEach((v,i)=>{
+    const x=pad.left+(i/3)*cw;
+    const y=pad.top+ch-(v/31.84)*ch;
+    ctx.beginPath(); ctx.arc(x,y,i===3?5:3.5,0,Math.PI*2);
+    ctx.fillStyle=i===3?'#c8702a':'#e8943a'; ctx.fill();
+    if(i===3){
+      ctx.strokeStyle='white'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.stroke();
+    }
+    ctx.fillStyle=i===3?'#c8702a':'#7a6e64';
+    ctx.font=i===3?'bold 9px JetBrains Mono,monospace':'9px JetBrains Mono,monospace';
+    ctx.textAlign='center';
+    ctx.fillText(v.toFixed(2)+'%', x, y-(i===3?10:9));
+  });
+},200);
+
+// ── Bhaya quiescence grid ─────────────────────────────────────────────────────
+(function(){
+  const grid = document.getElementById('bhayaGrid');
+  const conditions = [
+    {label:'E · Full Manas', data:BHAYA_DATA.manas_full},
+    {label:'D · Low amp',    data:BHAYA_DATA.low},
+    {label:'C · High amp',   data:BHAYA_DATA.high},
+    {label:'A · Baseline',   data:BHAYA_DATA.baseline},
+  ];
+  grid.innerHTML = '<div class="qg-header"></div>';
+  for(let t=0;t<10;t++) grid.innerHTML += `<div class="qg-header">T${t}</div>`;
+  conditions.forEach(c=>{
+    const lbl=document.createElement('div');
+    lbl.className='qg-label'; lbl.textContent=c.label;
+    grid.appendChild(lbl);
+    c.data.forEach(v=>{
+      const cell=document.createElement('div');
+      cell.className='qg-cell';
+      if(v===0){
+        cell.style.background='#d1fae5'; cell.style.color='#065f46';
+        cell.textContent='0.000';
+      } else if(v<0.05){
+        cell.style.background='#fef3c7'; cell.style.color='#92400e';
+        cell.textContent=v.toFixed(3);
+      } else {
+        cell.style.background='#fee2e2'; cell.style.color='#991b1b';
+        cell.textContent=v.toFixed(3);
+      }
+      grid.appendChild(cell);
+    });
+  });
+})();
+
+// ── Interactive Explorer ──────────────────────────────────────────────────────
+// Real data points: [A_manas, AA, BWT, peak_frac]
+const REAL_DATA = [
+  {a:0.00, aa:14.35, bwt:-52.68, peak:0.505},
+  {a:0.05, aa:15.08, bwt:-51.87, peak:0.427},
+  {a:0.10, aa:15.19, bwt:-50.91, peak:0.325},
+  {a:0.25, aa:13.01, bwt:-53.00, peak:0.111},
+];
+
+function interpolate(x, data, key) {
+  // Clamp to range
+  if(x<=data[0].a) return data[0][key];
+  if(x>=data[data.length-1].a) return data[data.length-1][key];
+  for(let i=0;i<data.length-1;i++){
+    if(x>=data[i].a && x<=data[i+1].a){
+      const t=(x-data[i].a)/(data[i+1].a-data[i].a);
+      return data[i][key]*(1-t)+data[i+1][key]*t;
+    }
+  }
+}
+
+function drawOLIF(a_manas) {
+  const canvas = document.getElementById('olifCanvas');
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const w = canvas.parentElement.clientWidth||400;
+  const h = 160;
+  canvas.width  = w*dpr;
+  canvas.height = h*dpr;
+  canvas.style.width  = w+'px';
+  canvas.style.height = h+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  const V_base = 0.3;
+  const T = 4;
+  const thresholds = [];
+  for(let t=0;t<T;t++){
+    thresholds.push(V_base + a_manas * Math.cos(Math.PI*t/(T-1)));
+  }
+  const maxV = V_base + 0.32;
+  const minV = V_base - 0.32;
+  const pad  = {top:24,right:24,bottom:36,left:56};
+  const cw   = w-pad.left-pad.right;
+  const ch   = h-pad.top-pad.bottom;
+
+  ctx.clearRect(0,0,w,h);
+
+  // Y grid
+  const yVals=[0.0,0.1,0.2,0.3,0.4,0.5,0.6];
+  yVals.forEach(yv=>{
+    const y=pad.top+ch-((yv-minV)/(maxV-minV))*ch;
+    if(y<pad.top||y>pad.top+ch) return;
+    ctx.strokeStyle='rgba(0,0,0,0.07)'; ctx.lineWidth=1;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cw,y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#7a6e64'; ctx.font='9px JetBrains Mono,monospace'; ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(2),pad.left-5,y+3);
+  });
+
+  // V_base line
+  const yBase=pad.top+ch-((V_base-minV)/(maxV-minV))*ch;
+  ctx.strokeStyle='rgba(200,112,42,0.2)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(pad.left,yBase); ctx.lineTo(pad.left+cw,yBase); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(200,112,42,0.5)'; ctx.font='8px JetBrains Mono,monospace'; ctx.textAlign='left';
+  ctx.fillText('V_base',pad.left+4,yBase-4);
+
+  // Threshold bars — drawn from zero (bottom) upward so taller bar = higher threshold
+  const barW  = cw/T*0.55;
+  const yZero = pad.top+ch-((0-minV)/(maxV-minV))*ch; // y-pixel of value=0
+  thresholds.forEach((v,t)=>{
+    const x      = pad.left+(t/(T-1))*cw - barW/2;
+    const yTop   = pad.top+ch-((v-minV)/(maxV-minV))*ch; // top of bar = threshold value
+    const barH   = yZero - yTop; // height from 0 up to threshold
+
+    // Color: t=0 is Vikalpa purple (highest), rest fade amber→teal
+    const colors = [
+      {fill:'rgba(128,50,192,0.18)', stroke:'rgba(128,50,192,0.75)'},  // t=0 Vikalpa
+      {fill:'rgba(180,100,40,0.15)', stroke:'rgba(180,100,40,0.6)'},   // t=1
+      {fill:'rgba(42,140,100,0.15)', stroke:'rgba(42,140,100,0.6)'},   // t=2
+      {fill:'rgba(32,128,96,0.18)',  stroke:'rgba(32,128,96,0.75)'},   // t=3 Sankalpa
+    ];
+    const col = colors[t];
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(x, yTop, x, yZero);
+    grad.addColorStop(0, col.fill.replace('0.1','0.25').replace('0.18','0.28'));
+    grad.addColorStop(1, col.fill.replace('0.15','0.05').replace('0.18','0.06'));
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(x, yTop, barW, barH, [4,4,0,0]);
+    ctx.fill();
+    ctx.strokeStyle = col.stroke;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x, yTop, barW, barH, [4,4,0,0]);
+    ctx.stroke();
+
+    // Threshold value label above bar
+    ctx.fillStyle = t===0 ? '#6030a0' : (t===3 ? '#1a6050' : '#2d2825');
+    ctx.font = 'bold 10px JetBrains Mono,monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(v.toFixed(3), x+barW/2, yTop-6);
+
+    // t label below
+    ctx.fillStyle='#7a6e64'; ctx.font='9px JetBrains Mono,monospace';
+    ctx.fillText('t='+t, x+barW/2, h-pad.bottom+14);
+
+    // Vikalpa / Sankalpa label
+    if(t===0){
+      ctx.fillStyle='rgba(128,50,192,0.7)'; ctx.font='italic 8px Lato,sans-serif';
+      ctx.fillText('Vikalpa', x+barW/2, h-pad.bottom+25);
+      if(a_manas>0.0001){
+        ctx.fillStyle='#92400e'; ctx.font='bold 8px JetBrains Mono,monospace';
+        ctx.fillText('★ PEAK', x+barW/2, yTop-17);
+      }
+    }
+    if(t===3){
+      ctx.fillStyle='rgba(32,128,96,0.8)'; ctx.font='italic 8px Lato,sans-serif';
+      ctx.fillText('Sankalpa', x+barW/2, h-pad.bottom+25);
+    }
+  });
+
+  // Cosine curve overlay
+  ctx.beginPath();
+  for(let px=0;px<cw;px++){
+    const tFrac=px/cw*(T-1);
+    const vv=V_base+a_manas*Math.cos(Math.PI*tFrac/(T-1));
+    const x=pad.left+px;
+    const y=pad.top+ch-((vv-minV)/(maxV-minV))*ch;
+    px===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle='rgba(200,112,42,0.5)'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+  ctx.stroke(); ctx.setLineDash([]);
+}
+
+function updateExplorer(rawVal) {
+  const a = rawVal/100;
+  const pct = (a/0.30)*100;
+  document.getElementById('amanasSlider').style.setProperty('--pct', pct+'%');
+  document.getElementById('sliderDisplay').textContent = a.toFixed(2);
+
+  const aa   = interpolate(a, REAL_DATA, 'aa');
+  const bwt  = interpolate(a, REAL_DATA, 'bwt');
+  const peak = interpolate(a, REAL_DATA, 'peak');
+
+  document.getElementById('expAA').textContent  = aa.toFixed(2)+'%';
+  document.getElementById('expBWT').textContent = bwt.toFixed(2)+'%';
+  document.getElementById('expPeak').textContent= (peak*100).toFixed(1)+'%';
+
+  // AA color
+  const aaEl = document.getElementById('expAA');
+  if(aa>=15.19) aaEl.style.color='var(--manas)';
+  else if(aa>=14.35) aaEl.style.color='var(--teal)';
+  else aaEl.style.color='var(--terra)';
+
+  // Notes
+  let aaNote='', bwtNote='', peakNote='', regime='', regimeColor='', regimeBg='';
+  if(a<0.001){
+    aaNote='no oscillation — P6 baseline';
+    bwtNote='static threshold';
+    peakNote='all timesteps equal';
+    regime='Static Threshold — No Oscillation (Condition A/B)';
+    regimeColor='#4a3f36'; regimeBg='#ede8e0';
+  } else if(a<=0.08){
+    aaNote='partial filtering — low amplitude';
+    bwtNote='mild gate';
+    peakNote='gentle salience selection';
+    regime='Partial Filtering — Low Amplitude (Condition D range)';
+    regimeColor='#065f46'; regimeBg='#d1fae5';
+  } else if(a<=0.12){
+    aaNote='canonical result ★';
+    bwtNote='best in series';
+    peakNote='optimal salience filter';
+    regime='Optimal Zone — Canonical Maya-Manas (Condition E)';
+    regimeColor='#92400e'; regimeBg='#fef3c7';
+  } else if(a<=0.20){
+    aaNote='above optimal — degrading';
+    bwtNote='over-suppression beginning';
+    peakNote='fewer salient spikes survive';
+    regime='Degrading — Amplitude Too High';
+    regimeColor='#991b1b'; regimeBg='#fee2e2';
+  } else {
+    aaNote='spike starvation regime';
+    bwtNote='network over-suppressed';
+    peakNote='very few spikes at t=0';
+    regime='Spike Starvation — High Amplitude (Condition C range)';
+    regimeColor='#991b1b'; regimeBg='#fee2e2';
+  }
+
+  document.getElementById('expAANote').textContent   = aaNote;
+  document.getElementById('expBWTNote').textContent  = bwtNote;
+  document.getElementById('expPeakNote').textContent = peakNote;
+  document.getElementById('regimeLabel').textContent = regime;
+  document.getElementById('regimeLabel').style.color = regimeColor;
+  document.getElementById('regimeBar').style.background = regimeBg;
+  document.getElementById('regimeBar').style.border = `1px solid ${regimeColor}33`;
+
+  drawOLIF(a);
+}
+
+// Init
+setTimeout(()=>{ updateExplorer(10); },100);
+</script>
+</body>
+</html>
