@@ -4,15 +4,15 @@
 
 *Maya Research Series · Paper 7 · Nexus Learning Labs, Bengaluru*
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19363006.svg)](https://doi.org/10.5281/zenodo.19363006)
 
-**[📊 Interactive Dashboard](https://venky2099.github.io/Maya-Manas/maya_manas_dashboard.html)**
+**[?? Interactive Dashboard](https://venky2099.github.io/Maya-Manas/maya_manas_dashboard.html)**
 
 ---
 
 ## Overview
 
-Maya-Manas introduces the first oscillatory attentional gate in the Maya Research Series. Drawing on Advaita Vedantic philosophy, we model **Manas** (मनस्) — the oscillating, doubting, sensory-receiving mind — as a per-timestep threshold modulation on the fc1 LIF layer, tracing the **Vikalpa-to-Sankalpa** transition within each forward pass.
+Maya-Manas introduces the first oscillatory attentional gate in the Maya Research Series. Drawing on Advaita Vedantic philosophy, we model **Manas** (????) — the oscillating, doubting, sensory-receiving mind — as a per-timestep threshold modulation on the fc1 LIF layer, tracing the **Vikalpa-to-Sankalpa** transition within each forward pass.
 
 The biological grounding is **thalamo-cortical oscillatory gating** (Steriade et al., 1993): thalamic bursts precede cortical receptivity — the gate opens, inputs flow through, then closes after the presentation ends. The full oscillatory cycle spans multiple input presentations, not a single forward pass.
 
@@ -24,15 +24,15 @@ The **Manas-GANE intersection** restricts amplified Vairagya protection to synap
 
 | Condition | Description | AA (%) | BWT (%) |
 |---|---|---|---|
-| A · Maya-Chitta baseline | P6 configuration, A_manas=0 | 14.35 | −52.68 |
-| B · Manas structure | O-LIF wired, A_manas=0, no oscillation | 14.35 | −52.68 |
-| C · High amplitude | A_manas=0.25 — spike starvation regime | 13.01 | −53.00 |
-| D · Low amplitude | A_manas=0.05 — partial filtering | 15.08 | −51.87 |
-| **E · Full Maya-Manas ★** | **A_manas=0.10 — canonical** | **15.19** | **−50.91** |
+| A · Maya-Chitta baseline | P6 configuration, A_manas=0 | 14.35 | -52.68 |
+| B · Manas structure | O-LIF wired, A_manas=0, no oscillation | 14.35 | -52.68 |
+| C · High amplitude | A_manas=0.25 — spike starvation regime | 13.01 | -53.00 |
+| D · Low amplitude | A_manas=0.05 — partial filtering | 15.08 | -51.87 |
+| **E · Full Maya-Manas ?** | **A_manas=0.10 — canonical** | **15.19** | **-50.91** |
 
 **Total Manas contribution: +0.84 pp AA, +1.77 pp BWT over P6 baseline**
 - Structure alone (B = A): zero contribution — the oscillation is the mechanism, not the wiring
-- Best BWT in the Maya series to date: −50.91%
+- Best BWT in the Maya series to date: -50.91%
 
 **Benchmark:** Split-CIFAR-100 CIL · 10 tasks · seed=42
 
@@ -41,7 +41,7 @@ The **Manas-GANE intersection** restricts amplified Vairagya protection to synap
 ## Core Mechanism
 ```python
 # O-LIF half-cycle threshold schedule
-# Vikalpa (suppression) → Sankalpa (receptivity) across T_STEPS=4
+# Vikalpa (suppression) ? Sankalpa (receptivity) across T_STEPS=4
 V_threshold(t) = V_base + A_manas * cos(pi * t / (T_STEPS - 1))
 
 # t=0: 0.400  — Vikalpa (maximum suppression)
@@ -70,25 +70,25 @@ vairagya_gain[manas_gane_mask] *= 2.0
 ## Repository Structure
 ```
 Maya-Manas/
-├── maya_cl/
-│   ├── plasticity/
-│   │   ├── manas.py            # ManasGate + ManasConsistency — core P7 contribution
-│   │   ├── chitta.py           # Carried from P6
-│   │   ├── viveka.py           # Carried from P5
-│   │   └── vairagya_decay.py   # Carried from P3
-│   ├── network/
-│   │   ├── backbone.py         # MayaManasNet — O-LIF fc1 layer
-│   │   └── affective_state.py  # Extended with manas signal
-│   ├── eval/
-│   │   ├── logger.py           # manas_peak_fraction column added
-│   │   └── metrics.py
-│   └── utils/
-│       └── config.py           # All A_MANAS_* hyperparameters
-├── run_manas_cil.py             # Main experiment
-├── run_ablation_manas.py        # 5-condition ablation
-├── sign_paper.py                # LSB steganographic IP protection
-├── maya_manas_dashboard.html    # Interactive results dashboard
-└── results/                     # Ablation CSV logs
++-- maya_cl/
+¦   +-- plasticity/
+¦   ¦   +-- manas.py            # ManasGate + ManasConsistency — core P7 contribution
+¦   ¦   +-- chitta.py           # Carried from P6
+¦   ¦   +-- viveka.py           # Carried from P5
+¦   ¦   +-- vairagya_decay.py   # Carried from P3
+¦   +-- network/
+¦   ¦   +-- backbone.py         # MayaManasNet — O-LIF fc1 layer
+¦   ¦   +-- affective_state.py  # Extended with manas signal
+¦   +-- eval/
+¦   ¦   +-- logger.py           # manas_peak_fraction column added
+¦   ¦   +-- metrics.py
+¦   +-- utils/
+¦       +-- config.py           # All A_MANAS_* hyperparameters
++-- run_manas_cil.py             # Main experiment
++-- run_ablation_manas.py        # 5-condition ablation
++-- sign_paper.py                # LSB steganographic IP protection
++-- maya_manas_dashboard.html    # Interactive results dashboard
++-- results/                     # Ablation CSV logs
 ```
 
 ---
@@ -140,7 +140,7 @@ MayaNexusVS2026NLL_Bengaluru_Narasimha
 | P4 | Maya-Smriti | CIFAR-10 CIL | AA=31.84%, Buddhi | [10.5281/zenodo.19228975](https://doi.org/10.5281/zenodo.19228975) |
 | P5 | Maya-Viveka | CIFAR-100 CIL | AA=16.03%, Viveka | [10.5281/zenodo.19279002](https://doi.org/10.5281/zenodo.19279002) |
 | P6 | Maya-Chitta | CIFAR-100 CIL | AA=14.42%, Chitta | [10.5281/zenodo.19337041](https://doi.org/10.5281/zenodo.19337041) |
-| **P7** | **Maya-Manas** | **CIFAR-100 CIL** | **AA=15.19%, Manas** | *pending* |
+| **P7** | **Maya-Manas** | **CIFAR-100 CIL** | **AA=15.19%, Manas** | [10.5281/zenodo.19363006](https://doi.org/10.5281/zenodo.19363006) |
 
 ---
 
@@ -151,7 +151,7 @@ MayaNexusVS2026NLL_Bengaluru_Narasimha
              Class-Incremental Learning in Affective Spiking Neural Networks},
   author  = {Swaminathan, Venkatesh},
   year    = {2026},
-  note    = {Zenodo preprint, DOI pending}
+  doi     = {10.5281/zenodo.19363006},
 }
 ```
 
