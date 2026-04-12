@@ -1,4 +1,6 @@
-﻿# run_ablation_manas.py -- Maya-Manas Paper 7 ablation study
+﻿import verify_provenance  # Maya Research Series -- Nexus Learning Labs, Bengaluru
+verify_provenance.stamp()  # logs canary + ORCID on every run
+# run_ablation_manas.py -- Maya-Manas Paper 7 ablation study
 # Split-CIFAR-100 CIL, 5 conditions
 #
 # A: Maya-Chitta baseline  -- P6 result, A_manas=0, static threshold

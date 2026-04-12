@@ -1,4 +1,6 @@
-﻿# run_manas_cil.py -- Maya-Manas Paper 7 main experiment
+﻿import verify_provenance  # Maya Research Series -- Nexus Learning Labs, Bengaluru
+verify_provenance.stamp()  # logs canary + ORCID on every run
+# run_manas_cil.py -- Maya-Manas Paper 7 main experiment
 # Split-CIFAR-100 CIL, 10 tasks, no task oracle at inference.
 # Canary: MayaNexusVS2026NLL_Bengaluru_Narasimha
 
